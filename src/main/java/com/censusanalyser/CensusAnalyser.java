@@ -1,5 +1,6 @@
 package com.censusanalyser;
 
+import com.exception.CensusAnalyserException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -16,7 +17,7 @@ public class CensusAnalyser {
         System.out.println("Welcome Census Analyser");
     }
 
-    public int loadCsvData(String csvFilePath) {
+    public int loadCsvData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE_PATH));) {
             CsvToBeanBuilder<StateCensusCsv> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
             csvToBeanBuilder.withType(StateCensusCsv.class);
@@ -30,8 +31,7 @@ public class CensusAnalyser {
             }
             return noOfCount;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         }
-        return 0;
     }
 }
