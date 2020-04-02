@@ -8,6 +8,7 @@ public class CensusAnalyserException extends Throwable {
     }
 
     public enum ExceptionType {
-        FILE_INCORRECT_EXCEPTION
+        FILE_INCORRECT_EXCEPTION,
+        DELIMITER_INCORRECT_EXCEPTION;
     }
 }
