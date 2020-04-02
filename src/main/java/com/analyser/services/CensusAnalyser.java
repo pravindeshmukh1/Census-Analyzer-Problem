@@ -1,5 +1,6 @@
-package com.censusanalyser;
+package com.analyser.services;
 
+import com.analyser.dao.StateCensusCsv;
 import com.exception.CensusAnalyserException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;

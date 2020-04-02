@@ -1,4 +1,4 @@
-package com.censusanalyser;
+package com.analyser.dao;
 
 import com.opencsv.bean.CsvBindByName;
 
