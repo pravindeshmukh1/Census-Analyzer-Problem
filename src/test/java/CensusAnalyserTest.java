@@ -42,7 +42,17 @@ public class CensusAnalyserTest {
         try {
             censusAnalyse.loadCsvData(CSV_FILE_PATH_DELIMITER);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.DELIMITER_INCORRECT_EXCEPTION, e.exceptionType);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.exceptionType);
+        }
+    }
+
+    @Test
+    public void givenStateCensusCSVFile_whenFile_Header_Incorrect_shouldReturnCustomException() {
+        CensusAnalyser censusAnalyse = new CensusAnalyser();
+        try {
+            censusAnalyse.loadCsvData(CSV_FILE_PATH_DELIMITER);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.exceptionType);
         }
     }
 }
