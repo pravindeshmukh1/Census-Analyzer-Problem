@@ -16,3 +16,4 @@ public class CensusAnalyserException extends Throwable {
         FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION
     }
 }
+

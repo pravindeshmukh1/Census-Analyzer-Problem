@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.stream.StreamSupport;
+import java.util.List;
 
 public class CensusAnalyser {
     private static final String CSV_FILE_PATH = "src/test/resources/StateCensusData.csv";
@@ -25,11 +24,8 @@ public class CensusAnalyser {
     public int loadCsvData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE_PATH));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<StateCensusCsv> stateCensusCsvIterator = icsvBuilder.readCSVFileIterator(reader, StateCensusCsv.class);
-            Iterable<StateCensusCsv> stateCensusCsvIterable = () -> stateCensusCsvIterator;
-            int noOfCount = 0;
-            noOfCount = (int) StreamSupport.stream(stateCensusCsvIterable.spliterator(), false).count();
-            return noOfCount;
+            List<StateCensusCsv> stateCensusCsvList = icsvBuilder.getCSVFileList(reader, StateCensusCsv.class);
+            return stateCensusCsvList.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         } catch (RuntimeException e) {
@@ -42,13 +38,12 @@ public class CensusAnalyser {
     public int loadStateCodeCsv(String csvStateCodePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_STATE_CODE_PATH));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<StateCodeCsv> stateCodeCsvIterator = icsvBuilder.readCSVFileIterator(reader, StateCodeCsv.class);
-            Iterable<StateCodeCsv> stateCodeCsvIterable = () -> stateCodeCsvIterator;
-            int noOfCount = 0;
-            noOfCount = (int) StreamSupport.stream(stateCodeCsvIterable.spliterator(), false).count();
-            return noOfCount;
+            List<StateCodeCsv> stateCodeCsvList = icsvBuilder.getCSVFileList(reader, StateCodeCsv.class);
+            return stateCodeCsvList.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.getMessage());
         } catch (CSVBuilderException e) {
             throw new CensusAnalyserException(e.getMessage(), e.type.name());
         }
