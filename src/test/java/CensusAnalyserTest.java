@@ -86,4 +86,15 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.exceptionType);
         }
     }
+
+    //2.3
+    @Test
+    public void givenStateCodeCSVFile_whenFileTypeInCorrect_shouldReturnCustomException() {
+        try {
+            String WRONG_CSV_FILE_TYPE = "src/test/resources/StateCode.txt";
+            stateCodeAnalyse.loadStateCodeCsv(WRONG_CSV_FILE_TYPE);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.exceptionType);
+        }
+    }
 }
