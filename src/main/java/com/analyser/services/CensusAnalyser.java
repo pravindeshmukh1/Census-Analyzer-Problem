@@ -2,6 +2,8 @@ package com.analyser.services;
 
 import com.analyser.dao.StateCensusCsv;
 import com.analyser.dao.StateCodeCsv;
+import com.analyser.factory.CSVBuilderFactory;
+import com.analyser.factory.ICSVBuilder;
 import com.exception.CensusAnalyserException;
 
 import java.io.IOException;
@@ -22,7 +24,8 @@ public class CensusAnalyser {
 
     public int loadCsvData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE_PATH));) {
-            Iterator<StateCensusCsv> stateCensusCsvIterator = new OpenCSVBuilder().readCSVFileIterator(reader, StateCensusCsv.class);
+            ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
+            Iterator<StateCensusCsv> stateCensusCsvIterator = icsvBuilder.readCSVFileIterator(reader, StateCensusCsv.class);
             Iterable<StateCensusCsv> stateCensusCsvIterable = () -> stateCensusCsvIterator;
             int noOfCount = 0;
             noOfCount = (int) StreamSupport.stream(stateCensusCsvIterable.spliterator(), false).count();
@@ -36,7 +39,8 @@ public class CensusAnalyser {
 
     public int loadStateCodeCsv(String csvStateCodePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_STATE_CODE_PATH));) {
-            Iterator<StateCodeCsv> stateCodeCsvIterator = new OpenCSVBuilder().readCSVFileIterator(reader, StateCodeCsv.class);
+            ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
+            Iterator<StateCodeCsv> stateCodeCsvIterator = icsvBuilder.readCSVFileIterator(reader, StateCodeCsv.class);
             Iterable<StateCodeCsv> stateCodeCsvIterable = () -> stateCodeCsvIterator;
             int noOfCount = 0;
             noOfCount = (int) StreamSupport.stream(stateCodeCsvIterable.spliterator(), false).count();
