@@ -1,6 +1,7 @@
 package com.analyser.services;
 
 import com.analyser.dao.StateCodeCsv;
+import com.exception.CensusAnalyserException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -14,7 +15,7 @@ public class StateCodeAnalyser {
 
     private static final String CSV_STATE_CODE_PATH = "src/test/resources/StateCode.csv";
 
-    public int loadStateCodeCsv(String csvStateCodePath) {
+    public int loadStateCodeCsv(String csvStateCodePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_STATE_CODE_PATH));) {
             CsvToBeanBuilder<StateCodeCsv> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
             csvToBeanBuilder.withType(StateCodeCsv.class).withIgnoreLeadingWhiteSpace(true);
@@ -27,8 +28,7 @@ public class StateCodeAnalyser {
             }
             return noOfCount;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         }
-        return 0;
     }
 }

@@ -33,7 +33,7 @@ public class CensusAnalyser {
             return noOfCount;
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
-        } catch (RuntimeException e ) {
+        } catch (RuntimeException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.getMessage());
         }
     }
