@@ -97,4 +97,15 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.exceptionType);
         }
     }
+
+    //2.4
+    @Test
+    public void givenStateCodeCSVFile_whenDelimiter_Incorrect_shouldReturnCustomException() {
+        try {
+            String CSV_FILE_PATH_DELIMITER = "src/test/resources/StateCodeDelimiter.csv";
+            stateCodeAnalyse.loadStateCodeCsv(CSV_FILE_PATH_DELIMITER);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.exceptionType);
+        }
+    }
 }
