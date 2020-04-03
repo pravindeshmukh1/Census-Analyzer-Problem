@@ -1,5 +1,4 @@
 import com.analyser.services.CensusAnalyser;
-import com.analyser.services.StateCodeAnalyser;
 import com.exception.CensusAnalyserException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,12 +8,10 @@ public class CensusAnalyserTest {
     private static String CSV_FILE_PATH = "src/test/resources/StateCensusData.csv";
     private static String CSV_STATE_CODE_PATH = "src/test/resources/StateCode.csv";
     CensusAnalyser censusAnalyser;
-    StateCodeAnalyser stateCodeAnalyse;
 
     @Before
     public void init() {
         censusAnalyser = new CensusAnalyser();
-        stateCodeAnalyse = new StateCodeAnalyser();
     }
 
     //1.1
@@ -72,7 +69,7 @@ public class CensusAnalyserTest {
     @Test
     public void givenStateCodeCSVFile_whenNumberOfRecordMatchesTrue_shouldReturnNumberOfRecordMatches() throws CensusAnalyserException {
         CSV_STATE_CODE_PATH = "src/test/resources/StateCode.csv";
-        int noOfCount = stateCodeAnalyse.loadStateCodeCsv(CSV_STATE_CODE_PATH);
+        int noOfCount = censusAnalyser.loadStateCodeCsv(CSV_STATE_CODE_PATH);
         Assert.assertEquals(37, noOfCount);
     }
 
@@ -81,7 +78,7 @@ public class CensusAnalyserTest {
     public void givenStateCodeCSVFile_whenInCorrect_shouldReturnCustomException() {
         try {
             String WRONG_CSV_FILE_PATH = "src/test/resources/stateCode.csv";
-            stateCodeAnalyse.loadStateCodeCsv(WRONG_CSV_FILE_PATH);
+            censusAnalyser.loadStateCodeCsv(WRONG_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.exceptionType);
         }
@@ -92,7 +89,7 @@ public class CensusAnalyserTest {
     public void givenStateCodeCSVFile_whenFileTypeInCorrect_shouldReturnCustomException() {
         try {
             String WRONG_CSV_FILE_TYPE = "src/test/resources/StateCode.txt";
-            stateCodeAnalyse.loadStateCodeCsv(WRONG_CSV_FILE_TYPE);
+            censusAnalyser.loadStateCodeCsv(WRONG_CSV_FILE_TYPE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.exceptionType);
         }
@@ -103,18 +100,18 @@ public class CensusAnalyserTest {
     public void givenStateCodeCSVFile_whenDelimiter_Incorrect_shouldReturnCustomException() {
         try {
             String CSV_FILE_PATH_DELIMITER = "src/test/resources/StateCodeDelimiter.csv";
-            stateCodeAnalyse.loadStateCodeCsv(CSV_FILE_PATH_DELIMITER);
+            censusAnalyser.loadStateCodeCsv(CSV_FILE_PATH_DELIMITER);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.exceptionType);
         }
     }
 
-    //1.5
+    //2.5
     @Test
     public void givenStateCodeCSVFile_whenFile_Header_Incorrect_shouldReturnCustomException() {
         try {
             String CSV_FILE_PATH_DELIMITER = "src/test/resources/StateCodeDelimiter.csv";
-            stateCodeAnalyse.loadStateCodeCsv(CSV_FILE_PATH_DELIMITER);
+            censusAnalyser.loadStateCodeCsv(CSV_FILE_PATH_DELIMITER);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.exceptionType);
         }
