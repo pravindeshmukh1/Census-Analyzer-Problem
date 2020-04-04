@@ -9,9 +9,9 @@ public class StateCensusCsv {
     @CsvBindByName(column = "Population", required = true)
     private int population;
     @CsvBindByName(column = "AreaInSqKm", required = true)
-    private int areaInSqKm;
+    private double areaInSqKm;
     @CsvBindByName(column = "DensityPerSqKm")
-    private int densityPerSqKm;
+    private double densityPerSqKm;
 
     @Override
     public String toString() {
