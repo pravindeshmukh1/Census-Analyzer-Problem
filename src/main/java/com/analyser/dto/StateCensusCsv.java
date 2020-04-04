@@ -1,4 +1,4 @@
-package com.analyser.dao;
+package com.analyser.dto;
 
 import com.opencsv.bean.CsvBindByName;
 
@@ -7,11 +7,11 @@ public class StateCensusCsv {
     @CsvBindByName(column = "State", required = true)
     public String state;
     @CsvBindByName(column = "Population", required = true)
-    private int population;
+    public int population;
     @CsvBindByName(column = "AreaInSqKm", required = true)
-    private double areaInSqKm;
+    public double areaInSqKm;
     @CsvBindByName(column = "DensityPerSqKm")
-    private double densityPerSqKm;
+    public double densityPerSqKm;
 
     @Override
     public String toString() {

@@ -1,7 +1,7 @@
 package com.analyser.services;
 
-import com.analyser.dao.StateCensusCsv;
-import com.analyser.dao.StateCodeCsv;
+import com.analyser.dto.StateCensusCsv;
+import com.analyser.dto.StateCodeCsv;
 import com.analyser.factory.CSVBuilderFactory;
 import com.analyser.factory.ICSVBuilder;
 import com.exception.CensusAnalyserException;
@@ -10,9 +10,10 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CensusAnalyser {
     private static final String CSV_CENSUS_FILE_PATH = "src/test/resources/StateCensusData.csv";
@@ -25,31 +26,56 @@ public class CensusAnalyser {
     List<StateCensusCsv> stateCensusCsvList = null;
     List<StateCodeCsv> stateCodeCsvList = null;
 
+    Map<String, StateCensusCsv> censusCsvMap;
+    Map<String, StateCodeCsv> codeCsvMap;
+
+    public CensusAnalyser() {
+        this.censusCsvMap = new HashMap<>();
+        this.codeCsvMap = new HashMap<>();
+    }
+
     public int loadCsvData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            stateCensusCsvList = icsvBuilder.getCSVFileList(reader, StateCensusCsv.class);
-            return stateCensusCsvList.size();
-        } catch (IOException e) {
+            Iterator<StateCensusCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCensusCsv.class);
+            while (csvFileIterator.hasNext()) {
+                StateCensusCsv censusCsv = csvFileIterator.next();
+                censusCsvMap.put(censusCsv.state, censusCsv);
+                stateCensusCsvList = censusCsvMap.values().stream().collect(Collectors.toList());
+            }
+            return censusCsvMap.size();
+        } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         } catch (RuntimeException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return 0;
     }
+
 
     public int loadStateCodeCsv(String csvStateCodePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvStateCodePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            stateCodeCsvList = icsvBuilder.getCSVFileList(reader, StateCodeCsv.class);
-            return stateCodeCsvList.size();
-        } catch (IOException e) {
+            Iterator<StateCodeCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCodeCsv.class);
+            while (csvFileIterator.hasNext()) {
+                StateCodeCsv codeCsv = csvFileIterator.next();
+                codeCsvMap.put(codeCsv.stateCode, codeCsv);
+                stateCodeCsvList = codeCsvMap.values().stream().collect(Collectors.toList());
+            }
+            return censusCsvMap.size();
+        } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         } catch (RuntimeException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_HEADER_AND_DELIMITER_INCORRECT_EXCEPTION, e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return 0;
     }
 
-    public String getStateWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
+    public String getStateWiseSortedCensusData() throws CensusAnalyserException {
         if (stateCensusCsvList.size() == 0)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data Found");
         Comparator<StateCensusCsv> censusCsvComparator = Comparator.comparing(census -> census.state);
@@ -71,7 +97,7 @@ public class CensusAnalyser {
         }
     }
 
-    public String getStateCodeWiseSortedData(String csvStateCodeFilePath) throws CensusAnalyserException {
+    public String getStateCodeWiseSortedData() throws CensusAnalyserException {
         if (stateCodeCsvList.size() == 0)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No State Code Data Found");
         Comparator<StateCodeCsv> stateCodeCsvComparator = Comparator.comparing(census -> census.stateCode);

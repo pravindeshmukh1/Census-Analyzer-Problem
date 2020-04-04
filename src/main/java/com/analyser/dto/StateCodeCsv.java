@@ -1,4 +1,4 @@
-package com.analyser.dao;
+package com.analyser.dto;
 
 import com.opencsv.bean.CsvBindByName;
 
