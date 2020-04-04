@@ -5,7 +5,7 @@ import com.opencsv.bean.CsvBindByName;
 public class StateCensusCsv {
 
     @CsvBindByName(column = "State", required = true)
-    private String state;
+    public String state;
     @CsvBindByName(column = "Population", required = true)
     private int population;
     @CsvBindByName(column = "AreaInSqKm", required = true)
@@ -23,3 +23,4 @@ public class StateCensusCsv {
                 '}';
     }
 }
+

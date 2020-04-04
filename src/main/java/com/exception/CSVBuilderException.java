@@ -1,6 +1,6 @@
 package com.exception;
 
-public class CSVBuilderException extends Throwable {
+public class CSVBuilderException extends RuntimeException {
     public ExceptionType type;
 
     public CSVBuilderException(ExceptionType type, String message) {
