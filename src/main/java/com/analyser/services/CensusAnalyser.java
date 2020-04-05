@@ -41,12 +41,17 @@ public class CensusAnalyser {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<StateCensusCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCensusCsv.class);
-            int noOfCount = 0;
+
             while (csvFileIterator.hasNext()) {
+                StateCensusCsv censusCsv = csvFileIterator.next();
+                CensusDAO censusDAO = censusDAOMap.put(censusCsv.state, new CensusDAO(censusCsv));
+                noOfRecord++;
+            }
+            censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
+           /* while (csvFileIterator.hasNext()) {
                 noOfCount++;
                 StateCensusCsv stateCensusCsv = csvFileIterator.next();
-            }
-            return noOfCount;
+            }*/
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         } catch (RuntimeException e) {
@@ -82,7 +87,7 @@ public class CensusAnalyser {
         return noOfRecord;
     }
 
-    public String getStateWiseSortedCensusData() throws CensusAnalyserException {
+    public String getStateWiseSortedCensusData(String csvCensusFilePath) throws CensusAnalyserException {
         if (censusDAOList.size() == 0)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data Found");
         Comparator<CensusDAO> censusCsvComparator = Comparator.comparing(censusCsv -> censusCsv.state);
@@ -98,6 +103,15 @@ public class CensusAnalyser {
         this.sorting(censusDAOComparator);
         String sortedStateCodeJson = new Gson().toJson(censusDAOList);
         return sortedStateCodeJson;
+    }
+
+    public String getPopulationWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
+        if (censusDAOList.size() == 0 || censusDAOList == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data");
+        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(census -> census.population);
+        this.sorting(indiaCensusDaoComparator);
+        String sortedCensusJson = new Gson().toJson(censusDAOList);
+        return sortedCensusJson;
     }
 
     private List sorting(Comparator<CensusDAO> daoComparator) {

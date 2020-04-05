@@ -9,14 +9,6 @@ public class CensusDAO {
     public double densityPerSqKm;
     public String stateCode;
 
-    public CensusDAO(String state, int population, double areaInSqKm, double densityPerSqKm, String stateCode) {
-        this.state = state;
-        this.population = population;
-        this.areaInSqKm = areaInSqKm;
-        this.densityPerSqKm = densityPerSqKm;
-        this.stateCode = stateCode;
-    }
-
     public CensusDAO(StateCensusCsv stateCensusCsv) {
         this.state = stateCensusCsv.state;
         this.population = stateCensusCsv.population;

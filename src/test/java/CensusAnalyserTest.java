@@ -132,7 +132,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSorted_shouldReturnSortedDataStartState() {
         try {
             censusAnalyser.loadCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData();
+            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             StateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, StateCensusCsv[].class);
             Assert.assertEquals("Andhra Pradesh", censusCsv[0].state);
         } catch (CensusAnalyserException e) {
@@ -144,7 +144,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSorted_shouldReturnSortedDataEndState() {
         try {
             censusAnalyser.loadCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData();
+            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             StateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, StateCensusCsv[].class);
             Assert.assertEquals("West Bengal", censusCsv[28].state);
         } catch (CensusAnalyserException e) {
@@ -182,7 +182,19 @@ public class CensusAnalyserTest {
         try {
             censusAnalyser.loadCsvData(CSV_CENSUS_FILE_PATH);
             int numberOfRecord = censusAnalyser.loadStateCodeCsv(CSV_STATE_CODE_FILE_PATH);
-            Assert.assertEquals(37, numberOfRecord);
+            Assert.assertEquals(66, numberOfRecord);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenIndiaCensusData_whenSorted_shouldReturnSortedStartPopulationState() {
+        try {
+            censusAnalyser.loadCsvData(CSV_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getPopulationWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
+            StateCensusCsv[] censusCsv = new Gson().fromJson(String.valueOf(sortedCensusData), StateCensusCsv[].class);
+            Assert.assertEquals(607688, censusCsv[0].population);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
