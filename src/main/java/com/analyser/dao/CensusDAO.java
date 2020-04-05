@@ -5,7 +5,7 @@ import com.analyser.dto.StateCensusCsv;
 public class CensusDAO {
     public String state;
     public int population;
-    public double areaInSqKm;
+    public long areaInSqKm;
     public double densityPerSqKm;
     public String stateCode;
 
