@@ -48,10 +48,6 @@ public class CensusAnalyser {
                 noOfRecord++;
             }
             censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
-           /* while (csvFileIterator.hasNext()) {
-                noOfCount++;
-                StateCensusCsv stateCensusCsv = csvFileIterator.next();
-            }*/
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         } catch (RuntimeException e) {
@@ -112,6 +108,16 @@ public class CensusAnalyser {
         this.sorting(indiaCensusDaoComparator);
         String sortedCensusJson = new Gson().toJson(censusDAOList);
         return sortedCensusJson;
+    }
+
+    public String getDensityWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
+        if (censusDAOList.size() == 0 || censusDAOList == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data");
+        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(census -> census.densityPerSqKm);
+        this.sorting(indiaCensusDaoComparator);
+        String sortedCensusJson = new Gson().toJson(censusDAOList);
+        return sortedCensusJson;
+
     }
 
     private List sorting(Comparator<CensusDAO> daoComparator) {
