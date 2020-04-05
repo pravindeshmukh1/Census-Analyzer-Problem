@@ -128,7 +128,6 @@ public class CensusAnalyserTest {
         }
     }
 
-    //3
     @Test
     public void givenIndiaCensusData_whenSorted_shouldReturnSortedDataStartState() {
         try {
@@ -173,6 +172,17 @@ public class CensusAnalyserTest {
             String sortedCodeData = censusAnalyser.getStateCodeWiseSortedData();
             StateCodeCsv[] codeCsv = new Gson().fromJson(sortedCodeData, StateCodeCsv[].class);
             Assert.assertEquals("WB", codeCsv[36].stateCode);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenStateCodeCsvFile_returnCorrectRecord() {
+        try {
+            censusAnalyser.loadCsvData(CSV_CENSUS_FILE_PATH);
+            int numberOfRecord = censusAnalyser.loadStateCodeCsv(CSV_STATE_CODE_FILE_PATH);
+            Assert.assertEquals(37, numberOfRecord);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
