@@ -6,7 +6,7 @@ public class CensusDAO {
     public String state;
     public long population;
     public double areaInSqKm;
-    public double densityPerSqKm;
+    public int densityPerSqKm;
     public String stateCode;
 
     public CensusDAO(StateCensusCsv stateCensusCsv) {
