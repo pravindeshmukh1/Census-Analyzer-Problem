@@ -102,9 +102,9 @@ public class CensusAnalyser {
     }
 
     public String getPopulationWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
-        if (censusDAOList.size() == 0 || censusDAOList == null)
+        if (censusDAOList.size() == 0)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data");
-        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(census -> census.population);
+        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(censusDAO -> censusDAO.population);
         this.sorting(indiaCensusDaoComparator);
         Collections.reverse(censusDAOList);
         String sortedCensusJson = new Gson().toJson(censusDAOList);
@@ -114,7 +114,7 @@ public class CensusAnalyser {
     public String getDensityWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
         if (censusDAOList.size() == 0 || censusDAOList == null)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data");
-        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(census -> census.densityPerSqKm);
+        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(censusDAO -> censusDAO.densityPerSqKm);
         this.sorting(indiaCensusDaoComparator);
         Collections.reverse(censusDAOList);
         String sortedCensusJson = new Gson().toJson(censusDAOList);
@@ -122,7 +122,17 @@ public class CensusAnalyser {
 
     }
 
-    private List sorting(Comparator<CensusDAO> daoComparator) {
+    public String getAreaWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
+        if (censusDAOList.size() == 0 || censusDAOList == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data");
+        Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(censusDAO -> censusDAO.areaInSqKm);
+        this.sorting(indiaCensusDaoComparator);
+        Collections.reverse(censusDAOList);
+        String sortedCensusJson = new Gson().toJson(censusDAOList);
+        return sortedCensusJson;
+    }
+
+    private void sorting(Comparator<CensusDAO> daoComparator) {
         for (int i = 0; i < censusDAOList.size() - 1; i++) {
             for (int j = 0; j < censusDAOList.size() - i - 1; j++) {
                 CensusDAO csv1 = censusDAOList.get(j);
@@ -133,6 +143,5 @@ public class CensusAnalyser {
                 }
             }
         }
-        return censusDAOList;
     }
 }
