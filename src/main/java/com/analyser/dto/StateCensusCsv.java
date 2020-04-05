@@ -7,7 +7,7 @@ public class StateCensusCsv {
     @CsvBindByName(column = "State", required = true)
     public String state;
     @CsvBindByName(column = "Population", required = true)
-    public int population;
+    public long population;
     @CsvBindByName(column = "AreaInSqKm", required = true)
     public double areaInSqKm;
     @CsvBindByName(column = "DensityPerSqKm")
