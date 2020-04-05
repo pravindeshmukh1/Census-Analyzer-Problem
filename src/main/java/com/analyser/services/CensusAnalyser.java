@@ -115,6 +115,7 @@ public class CensusAnalyser {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data");
         Comparator<CensusDAO> indiaCensusDaoComparator = Comparator.comparing(census -> census.densityPerSqKm);
         this.sorting(indiaCensusDaoComparator);
+        Collections.reverse(censusDAOList);
         String sortedCensusJson = new Gson().toJson(censusDAOList);
         return sortedCensusJson;
 

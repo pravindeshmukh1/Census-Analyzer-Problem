@@ -206,10 +206,9 @@ public class CensusAnalyserTest {
             censusAnalyser.loadCsvData(CSV_CENSUS_FILE_PATH);
             String sortedCensusData = censusAnalyser.getDensityWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             StateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, StateCensusCsv[].class);
-            Assert.assertEquals("Arunachal Pradesh", censusCsv[0].state);
+            Assert.assertEquals(1102, censusCsv[0].densityPerSqKm);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
     }
 }
-
