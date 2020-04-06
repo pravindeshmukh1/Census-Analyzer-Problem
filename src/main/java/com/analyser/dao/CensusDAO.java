@@ -1,19 +1,22 @@
 package com.analyser.dao;
 
-import com.analyser.dto.StateCensusCsv;
-import com.analyser.dto.StateCodeCsv;
+import com.analyser.dto.IndiaStateCensusCsv;
+import com.analyser.dto.IndiaStateCodeCsv;
 
 public class CensusDAO {
     public String state;
-    public long population;
-    public long areaInSqKm;
-    public long densityPerSqKm;
+    public int population;
+    public int areaInSqKm;
+    public int densityPerSqKm;
     public String stateCode;
 
-    public CensusDAO(StateCensusCsv stateCensusCsv) {
-        this.state = stateCensusCsv.state;
-        this.population = stateCensusCsv.population;
-        this.areaInSqKm = stateCensusCsv.areaInSqKm;
-        this.densityPerSqKm = stateCensusCsv.densityPerSqKm;
+    public CensusDAO(IndiaStateCensusCsv indiaStateCensusCsv) {
+        this.state = indiaStateCensusCsv.state;
+        this.population = indiaStateCensusCsv.population;
+        this.areaInSqKm = indiaStateCensusCsv.areaInSqKm;
+        this.densityPerSqKm = indiaStateCensusCsv.densityPerSqKm;
+    }
+    public CensusDAO(IndiaStateCodeCsv indiaStateCodeCsv) {
+        this.stateCode=indiaStateCodeCsv.stateCode;
     }
 }

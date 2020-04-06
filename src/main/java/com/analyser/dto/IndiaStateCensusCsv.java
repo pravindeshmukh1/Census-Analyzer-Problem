@@ -2,20 +2,20 @@ package com.analyser.dto;
 
 import com.opencsv.bean.CsvBindByName;
 
-public class StateCensusCsv {
+public class IndiaStateCensusCsv {
 
     @CsvBindByName(column = "State", required = true)
     public String state;
     @CsvBindByName(column = "Population", required = true)
-    public long population;
+    public int population;
     @CsvBindByName(column = "AreaInSqKm", required = true)
-    public long areaInSqKm;
+    public int areaInSqKm;
     @CsvBindByName(column = "DensityPerSqKm")
-    public long densityPerSqKm;
+    public int densityPerSqKm;
 
     @Override
     public String toString() {
-        return "StateCensusCsv{" +
+        return "IndiaStateCensusCsv{" +
                 "stateName='" + state + '\'' +
                 ", population=" + population +
                 ", areaInSqKm=" + areaInSqKm +

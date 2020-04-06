@@ -1,8 +1,8 @@
 package com.analyser.services;
 
 import com.analyser.dao.CensusDAO;
-import com.analyser.dto.StateCensusCsv;
-import com.analyser.dto.StateCodeCsv;
+import com.analyser.dto.IndiaStateCensusCsv;
+import com.analyser.dto.IndiaStateCodeCsv;
 import com.analyser.factory.CSVBuilderFactory;
 import com.analyser.factory.ICSVBuilder;
 import com.exception.CensusAnalyserException;
@@ -33,7 +33,7 @@ public class CensusAnalyser {
         this.censusDAOMap = new HashMap<>();
     }
 
-    public int loadCsvData(String csvFilePath) throws CensusAnalyserException {
+    public int loadCensusCsvData(String csvFilePath) throws CensusAnalyserException {
         int noOfRecord = 0;
         String fileExtension = csvFilePath.substring(csvFilePath.lastIndexOf(".") + 1);
         if (!fileExtension.equals("csv")) {
@@ -41,10 +41,10 @@ public class CensusAnalyser {
         }
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<StateCensusCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCensusCsv.class);
-            Iterable<StateCensusCsv> csvIterable = () -> csvFileIterator;
+            Iterator<IndiaStateCensusCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, IndiaStateCensusCsv.class);
+            Iterable<IndiaStateCensusCsv> csvIterable = () -> csvFileIterator;
             StreamSupport.stream(csvIterable.spliterator(), false)
-                    .forEach(StateCensusCsv -> censusDAOMap.put(StateCensusCsv.state, new CensusDAO(StateCensusCsv)));
+                    .forEach(IndiaStateCensusCsv -> censusDAOMap.put(IndiaStateCensusCsv.state, new CensusDAO(IndiaStateCensusCsv)));
             censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
             noOfRecord = censusDAOMap.size();
         } catch (NoSuchFileException e) {
@@ -65,11 +65,10 @@ public class CensusAnalyser {
         }
         try (Reader reader = Files.newBufferedReader(Paths.get(csvStateCodeFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<StateCodeCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCodeCsv.class);
-            Iterable<StateCodeCsv> csvIterable = () -> csvFileIterator;
+            Iterator<IndiaStateCodeCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, IndiaStateCodeCsv.class);
+            Iterable<IndiaStateCodeCsv> csvIterable = () -> csvFileIterator;
             StreamSupport.stream(csvIterable.spliterator(), false)
-                    .filter(csvState -> censusDAOMap.get(csvState.stateCode) != null)
-                    .forEach(csvState -> censusDAOMap.get(csvState.stateName).stateCode = csvState.stateCode);
+                    .forEach(IndiaStateCodeCsv -> censusDAOMap.put(IndiaStateCodeCsv.stateName, new CensusDAO(IndiaStateCodeCsv)));
             censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
             noOfRecord = censusDAOMap.size();
         } catch (NoSuchFileException e) {
@@ -85,7 +84,7 @@ public class CensusAnalyser {
     public String getStateWiseSortedCensusData(String csvCensusFilePath) throws CensusAnalyserException {
         if (censusDAOList.size() == 0)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No Census Data Found");
-        Comparator<CensusDAO> censusCsvComparator = Comparator.comparing(censusCsv -> censusCsv.state);
+        Comparator<CensusDAO> censusCsvComparator = Comparator.comparing(censusDAO -> censusDAO.state); //(censusCsv -> censusCsv.state);
         this.sorting(censusCsvComparator);
         String sortedCensusJson = new Gson().toJson(censusDAOList);
         return sortedCensusJson;
@@ -118,7 +117,6 @@ public class CensusAnalyser {
         Collections.reverse(censusDAOList);
         String sortedCensusJson = new Gson().toJson(censusDAOList);
         return sortedCensusJson;
-
     }
 
     public String getAreaWiseSortedCensusData(String csvFilePath) throws CensusAnalyserException {
