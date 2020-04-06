@@ -2,6 +2,7 @@ package com.analyser.dao;
 
 import com.analyser.dto.IndiaStateCensusCsv;
 import com.analyser.dto.IndiaStateCodeCsv;
+import com.analyser.dto.USStateCensusCsv;
 
 public class CensusDAO {
     public String state;
@@ -18,5 +19,8 @@ public class CensusDAO {
     }
     public CensusDAO(IndiaStateCodeCsv indiaStateCodeCsv) {
         this.stateCode=indiaStateCodeCsv.stateCode;
+    }
+
+    public CensusDAO(USStateCensusCsv nextCensusCsv) {
     }
 }

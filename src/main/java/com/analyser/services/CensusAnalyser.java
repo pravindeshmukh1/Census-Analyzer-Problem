@@ -3,6 +3,7 @@ package com.analyser.services;
 import com.analyser.dao.CensusDAO;
 import com.analyser.dto.IndiaStateCensusCsv;
 import com.analyser.dto.IndiaStateCodeCsv;
+import com.analyser.dto.USStateCensusCsv;
 import com.analyser.factory.CSVBuilderFactory;
 import com.analyser.factory.ICSVBuilder;
 import com.exception.CensusAnalyserException;
@@ -33,7 +34,7 @@ public class CensusAnalyser {
         this.censusDAOMap = new HashMap<>();
     }
 
-    public int loadCensusCsvData(String csvFilePath) throws CensusAnalyserException {
+    public int loadIndiaCensusCsvData(String csvFilePath) throws CensusAnalyserException {
         int noOfRecord = 0;
         String fileExtension = csvFilePath.substring(csvFilePath.lastIndexOf(".") + 1);
         if (!fileExtension.equals("csv")) {
@@ -57,7 +58,7 @@ public class CensusAnalyser {
         return noOfRecord;
     }
 
-    public int loadStateCodeCsv(String csvStateCodeFilePath) throws CensusAnalyserException {
+    public int loadIndiaStateCodeCsv(String csvStateCodeFilePath) throws CensusAnalyserException {
         int noOfRecord = 0;
         String fileExtension = csvStateCodeFilePath.substring(csvStateCodeFilePath.lastIndexOf(".") + 1);
         if (!fileExtension.equals("csv")) {
@@ -141,5 +142,21 @@ public class CensusAnalyser {
             }
         }
         return censusDAOList;
+    }
+
+    public int loadUSCensusCsvData(String usCensusFilePath) throws CensusAnalyserException {
+        try (Reader reader = Files.newBufferedReader(Paths.get(usCensusFilePath))) {
+            ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
+            Iterator<USStateCensusCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, USStateCensusCsv.class);
+            while (csvFileIterator.hasNext()) {
+                USStateCensusCsv nextCensusCsv = csvFileIterator.next();
+                censusDAOMap.put(nextCensusCsv.state, new CensusDAO(nextCensusCsv));
+            }
+            censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
+            return censusDAOMap.size();
+
+        } catch (CensusAnalyserException | IOException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
+        }
     }
 }
