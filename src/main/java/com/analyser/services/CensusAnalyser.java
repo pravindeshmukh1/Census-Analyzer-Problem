@@ -15,6 +15,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
     private static final String CSV_CENSUS_FILE_PATH = "src/test/resources/StateCensusData.csv";
@@ -41,13 +42,11 @@ public class CensusAnalyser {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<StateCensusCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCensusCsv.class);
-
-            while (csvFileIterator.hasNext()) {
-                StateCensusCsv censusCsv = csvFileIterator.next();
-                CensusDAO censusDAO = censusDAOMap.put(censusCsv.state, new CensusDAO(censusCsv));
-                noOfRecord++;
-            }
+            Iterable<StateCensusCsv> csvIterable = () -> csvFileIterator;
+            StreamSupport.stream(csvIterable.spliterator(), false)
+                    .forEach(StateCensusCsv -> censusDAOMap.put(StateCensusCsv.state, new CensusDAO(StateCensusCsv)));
             censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
+            noOfRecord = censusDAOMap.size();
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
         } catch (RuntimeException e) {
@@ -67,11 +66,11 @@ public class CensusAnalyser {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvStateCodeFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<StateCodeCsv> csvFileIterator = icsvBuilder.getCSVFileIterator(reader, StateCodeCsv.class);
-            while (csvFileIterator.hasNext()) {
-                StateCodeCsv codeCsv = csvFileIterator.next();
-                CensusDAO censusDAO = censusDAOMap.put(codeCsv.stateCode, new CensusDAO(codeCsv.stateCode));
-                censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
-            }
+            Iterable<StateCodeCsv> csvIterable = () -> csvFileIterator;
+            StreamSupport.stream(csvIterable.spliterator(), false)
+                    .filter(csvState -> censusDAOMap.get(csvState.stateCode) != null)
+                    .forEach(csvState -> censusDAOMap.get(csvState.stateName).stateCode = csvState.stateCode);
+            censusDAOList = censusDAOMap.values().stream().collect(Collectors.toList());
             noOfRecord = censusDAOMap.size();
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, e.getMessage());
@@ -93,7 +92,7 @@ public class CensusAnalyser {
     }
 
     public String getStateCodeWiseSortedData() throws CensusAnalyserException {
-        if (censusDAOList.size() == 0 | censusDAOList == null)
+        if (censusDAOList.size() == 0)
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, "No State Code Data Found");
         Comparator<CensusDAO> censusDAOComparator = Comparator.comparing(censusDAO -> censusDAO.stateCode);
         this.sorting(censusDAOComparator);
@@ -132,7 +131,7 @@ public class CensusAnalyser {
         return sortedCensusJson;
     }
 
-    private void sorting(Comparator<CensusDAO> daoComparator) {
+    private List sorting(Comparator<CensusDAO> daoComparator) {
         for (int i = 0; i < censusDAOList.size() - 1; i++) {
             for (int j = 0; j < censusDAOList.size() - i - 1; j++) {
                 CensusDAO csv1 = censusDAOList.get(j);
@@ -143,5 +142,6 @@ public class CensusAnalyser {
                 }
             }
         }
+        return censusDAOList;
     }
 }

@@ -1,6 +1,7 @@
 package com.analyser.dao;
 
 import com.analyser.dto.StateCensusCsv;
+import com.analyser.dto.StateCodeCsv;
 
 public class CensusDAO {
     public String state;
@@ -14,9 +15,5 @@ public class CensusDAO {
         this.population = stateCensusCsv.population;
         this.areaInSqKm = stateCensusCsv.areaInSqKm;
         this.densityPerSqKm = stateCensusCsv.densityPerSqKm;
-    }
-
-    public CensusDAO(String stateCode) {
-        this.stateCode = stateCode;
     }
 }
