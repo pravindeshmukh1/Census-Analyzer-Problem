@@ -17,7 +17,6 @@ public class CensusAnalyserTest {
     public void init() {
         censusAnalyser = new CensusAnalyser();
     }
-
     //1.1
     @Test
     public void givenIndiaStateCensusCSVFile_whenNumberOfRecordMatchesTrue_shouldReturnNumberOfRecordMatches() {
@@ -232,4 +231,3 @@ public class CensusAnalyserTest {
         Assert.assertEquals(51, noOfCount);
     }
 }
-

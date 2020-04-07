@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
-    private static final String CSV_CENSUS_FILE_PATH = "src/test/resources/StateCensusData.csv";
-    private static final String CSV_STATE_CODE_FILE_PATH = "src/test/resources/StateCode.csv";
 
     public static void main(String[] args) {
         System.out.println("Welcome Census Analyser");

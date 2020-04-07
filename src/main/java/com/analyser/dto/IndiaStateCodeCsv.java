@@ -13,6 +13,12 @@ public class IndiaStateCodeCsv {
     @CsvBindByName(column = "TIN", required = true)
     public int tin;
 
+    public IndiaStateCodeCsv(int srNo, String stateName, int tin) {
+        this.srNo = srNo;
+        this.stateName = stateName;
+        this.tin = tin;
+    }
+
     @Override
     public String toString() {
         return "IndiaStateCodeCsv{" +
