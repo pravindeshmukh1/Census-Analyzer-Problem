@@ -23,5 +23,6 @@ public class CensusDAO {
     }
 
     public CensusDAO(USStateCensusCsv nextCensusCsv) {
+        state = nextCensusCsv.state;
     }
 }

@@ -1,5 +1,6 @@
 import com.analyser.dto.IndiaStateCensusCsv;
 import com.analyser.dto.IndiaStateCodeCsv;
+import com.analyser.dto.USStateCensusCsv;
 import com.analyser.services.CensusAnalyser;
 import com.analyser.exception.CensusAnalyserException;
 import com.google.gson.Gson;
@@ -133,7 +134,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSorted_shouldReturnSortedDataStartState() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaCensusCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getIndiaStateWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             IndiaStateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, IndiaStateCensusCsv[].class);
             Assert.assertEquals("Andhra Pradesh", censusCsv[0].state);
         } catch (CensusAnalyserException e) {
@@ -145,7 +146,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSorted_shouldReturnSortedDataEndState() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaCensusCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getIndiaStateWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             IndiaStateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, IndiaStateCensusCsv[].class);
             Assert.assertEquals("West Bengal", censusCsv[28].state);
         } catch (CensusAnalyserException e) {
@@ -158,7 +159,7 @@ public class CensusAnalyserTest {
     public void givenIndiaStateData_whenSorted_shouldReturnSortedDataStartState() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaStateCodeCsv(CSV_STATE_CODE_FILE_PATH);
-            String sortedCodeData = censusAnalyser.getStateCodeWiseSortedData();
+            String sortedCodeData = censusAnalyser.getIndiaStateCodeWiseSortedData();
             IndiaStateCodeCsv[] codeCsv = new Gson().fromJson(sortedCodeData, IndiaStateCodeCsv[].class);
             Assert.assertEquals("AD", codeCsv[0].stateCode);
         } catch (CensusAnalyserException e) {
@@ -170,7 +171,7 @@ public class CensusAnalyserTest {
     public void givenIndiaStateData_whenSorted_shouldReturnSortedDataEndState() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaStateCodeCsv(CSV_STATE_CODE_FILE_PATH);
-            String sortedCodeData = censusAnalyser.getStateCodeWiseSortedData();
+            String sortedCodeData = censusAnalyser.getIndiaStateCodeWiseSortedData();
             IndiaStateCodeCsv[] codeCsv = new Gson().fromJson(sortedCodeData, IndiaStateCodeCsv[].class);
             Assert.assertEquals("WB", codeCsv[36].stateCode);
         } catch (CensusAnalyserException e) {
@@ -193,7 +194,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSortedState_shouldReturnSortedStartPopulationState() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaCensusCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getPopulationWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getIndiaPopulationWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             IndiaStateCensusCsv[] censusCsv = new Gson().fromJson(String.valueOf(sortedCensusData), IndiaStateCensusCsv[].class);
             Assert.assertEquals(199812341, censusCsv[0].population);
         } catch (CensusAnalyserException e) {
@@ -205,7 +206,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSortedOnDensity_shouldReturnPopulationDensityState() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaCensusCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getDensityWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getIndiaDensityWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             IndiaStateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, IndiaStateCensusCsv[].class);
             Assert.assertEquals(1102, censusCsv[0].densityPerSqKm);
         } catch (CensusAnalyserException e) {
@@ -217,7 +218,7 @@ public class CensusAnalyserTest {
     public void givenIndiaCensusData_whenSortedOnArea_shouldReturnResult() throws CensusAnalyserException {
         try {
             censusAnalyser.loadIndiaCensusCsvData(CSV_CENSUS_FILE_PATH);
-            String sortedCensusData = censusAnalyser.getAreaWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getIndiaAreaWiseSortedCensusData(CSV_CENSUS_FILE_PATH);
             IndiaStateCensusCsv[] censusCsv = new Gson().fromJson(sortedCensusData, IndiaStateCensusCsv[].class);
             Assert.assertEquals(342239, censusCsv[0].areaInSqKm);
         } catch (CensusAnalyserException e) {
@@ -235,5 +236,22 @@ public class CensusAnalyserTest {
         } catch (CensusAnalyserException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, e.getMessage());
         }
+    }
+
+    //9
+    @Test
+    public void givenUsStateData_whenSorted_shouldReturnSortedDataStartState() throws CensusAnalyserException {
+        censusAnalyser.loadUSCensusCsvData(US_CENSUS_FILE_PATH);
+        String sortedCodeData = censusAnalyser.getUsStateWiseSortedCensusData();
+        USStateCensusCsv[] codeCsv = new Gson().fromJson(sortedCodeData, USStateCensusCsv[].class);
+        Assert.assertEquals("Alabama", codeCsv[0].state);
+    }
+
+    @Test
+    public void givenUsStateData_whenSorted_shouldReturnSortedDataEndState() throws CensusAnalyserException {
+        censusAnalyser.loadUSCensusCsvData(US_CENSUS_FILE_PATH);
+        String sortedCodeData = censusAnalyser.getUsStateWiseSortedCensusData();
+        USStateCensusCsv[] codeCsv = new Gson().fromJson(sortedCodeData, USStateCensusCsv[].class);
+        Assert.assertEquals("Wyoming", codeCsv[50].state);
     }
 }
