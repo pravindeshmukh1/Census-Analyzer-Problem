@@ -6,7 +6,7 @@ import com.analyser.dto.IndiaStateCodeCsv;
 import com.analyser.dto.USStateCensusCsv;
 import com.analyser.factory.CSVBuilderFactory;
 import com.analyser.factory.ICSVBuilder;
-import com.exception.CensusAnalyserException;
+import com.analyser.exception.CensusAnalyserException;
 import com.google.gson.Gson;
 
 import java.io.IOException;

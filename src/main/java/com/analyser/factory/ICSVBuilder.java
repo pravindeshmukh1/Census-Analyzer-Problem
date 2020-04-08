@@ -1,7 +1,7 @@
 package com.analyser.factory;
 
-import com.exception.CSVBuilderException;
-import com.exception.CensusAnalyserException;
+import com.analyser.exception.CSVBuilderException;
+import com.analyser.exception.CensusAnalyserException;
 
 import java.io.Reader;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.exception;
+package com.analyser.exception;
 
 public class CensusAnalyserException extends Throwable {
     public ExceptionType exceptionType;

@@ -1,4 +1,4 @@
-package com.exception;
+package com.analyser.exception;
 
 public class CSVBuilderException extends RuntimeException {
     public ExceptionType type;

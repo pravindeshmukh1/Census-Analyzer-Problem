@@ -1,7 +1,7 @@
 import com.analyser.dto.IndiaStateCensusCsv;
 import com.analyser.dto.IndiaStateCodeCsv;
 import com.analyser.services.CensusAnalyser;
-import com.exception.CensusAnalyserException;
+import com.analyser.exception.CensusAnalyserException;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Before;

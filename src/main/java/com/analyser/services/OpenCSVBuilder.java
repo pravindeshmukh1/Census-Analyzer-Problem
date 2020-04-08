@@ -1,7 +1,7 @@
 package com.analyser.services;
 
 import com.analyser.factory.ICSVBuilder;
-import com.exception.CSVBuilderException;
+import com.analyser.exception.CSVBuilderException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
