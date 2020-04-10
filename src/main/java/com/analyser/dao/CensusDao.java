@@ -9,9 +9,9 @@ public class CensusDao {
     private int tin;
     private int srNo;
     public String stateCode;
-    public int population;
-    public int densityPerSqKm;
-    public int areaInSqKm;
+    public double population;
+    public double densityPerSqKm;
+    public double areaInSqKm;
     public String state;
 
     public CensusDao(IndiaStateCensusCsv indiaStateCensusCsv) {
@@ -21,18 +21,18 @@ public class CensusDao {
         this.densityPerSqKm = indiaStateCensusCsv.densityPerSqKm;
     }
 
-    public CensusDao(IndiaStateCodeCsv indiaStateCodeCsv) {
+   /* public CensusDao(IndiaStateCodeCsv indiaStateCodeCsv) {
         this.stateCode = indiaStateCodeCsv.stateCode;
         this.srNo = indiaStateCodeCsv.srNo;
         this.state = indiaStateCodeCsv.stateName;
         this.tin = indiaStateCodeCsv.tin;
-    }
+    }*/
 
     public CensusDao(USStateCensusCsv nextCensusCsv) {
-
         state = nextCensusCsv.state;
         stateId = nextCensusCsv.stateId;
         population = nextCensusCsv.population;
-
+        densityPerSqKm = nextCensusCsv.populationDensity;
+        areaInSqKm = nextCensusCsv.totalArea;
     }
 }

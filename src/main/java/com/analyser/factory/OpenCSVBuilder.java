@@ -1,6 +1,5 @@
-package com.analyser.services;
+package com.analyser.factory;
 
-import com.analyser.factory.ICSVBuilder;
 import com.analyser.exception.CSVBuilderException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
