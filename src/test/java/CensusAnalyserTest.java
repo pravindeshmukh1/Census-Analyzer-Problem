@@ -325,4 +325,17 @@ public class CensusAnalyserTest {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, e.getMessage());
         }
     }
+
+    @Test
+    public void givenIndianCensusData_WhenSortedOnDualSort_PopulationAndDensity_ShouldReturnSortedList() throws CensusAnalyserException {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser(CensusAnalyser.Country.US);
+            censusAnalyser.loadCensusCsvData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getDualSortByPopulationDensity();
+            USStateCensusCsv[] censusCSV = new Gson().fromJson(sortedCensusData, USStateCensusCsv[].class);
+            Assert.assertEquals("California", censusCSV[0].state);
+        } catch (CensusAnalyserException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, e.getMessage());
+        }
+    }
 }
