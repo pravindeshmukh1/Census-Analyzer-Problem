@@ -22,10 +22,10 @@ public class IndiaCensusAdapter extends CensusAdapter {
         Map<String, CensusDao> censusDaoMap = super.loadCensusData(IndiaStateCensusCsv.class, csvFilePath[0]);
         if (csvFilePath.length == 1)
             return censusDaoMap;
-        return loadStateCodeCSVData(censusDaoMap, csvFilePath[1]);
+        return this.loadStateCodeCSVData(/*censusDaoMap,*/ csvFilePath[1]);
     }
 
-    private Map<String, CensusDao> loadStateCodeCSVData(Map<String, CensusDao> censusDaoMap, String csvFilePath) throws CensusAnalyserException {
+    private Map<String, CensusDao> loadStateCodeCSVData(/*Map<String, CensusDao> censusDaoMap, */String csvFilePath) throws CensusAnalyserException {
         String fileExtension = csvFilePath.substring(csvFilePath.lastIndexOf(".") + 1);
         if (!fileExtension.equals("csv")) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_INCORRECT_EXCEPTION, "File Not Found");
