@@ -60,75 +60,19 @@ public class USStateCensusCsv {
     public USStateCensusCsv() {
     }
 
-    public String getStateId() {
-        return stateId;
-    }
-
-    public void setStateId(String stateId) {
-        this.stateId = stateId;
-    }
-
     public String getState() {
         return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public int getPopulation() {
         return population;
     }
 
-    public void setPopulation(int population) {
-        this.population = population;
-    }
-
-    public int getHousingUnit() {
-        return housingUnit;
-    }
-
-    public void setHousingUnit(int housingUnit) {
-        this.housingUnit = housingUnit;
-    }
-
     public double getTotalArea() {
         return totalArea;
     }
 
-    public void setTotalArea(double totalArea) {
-        this.totalArea = totalArea;
-    }
-
-    public double getWaterArea() {
-        return waterArea;
-    }
-
-    public void setWaterArea(double waterArea) {
-        this.waterArea = waterArea;
-    }
-
-    public double getLandArea() {
-        return landArea;
-    }
-
-    public void setLandArea(double landArea) {
-        this.landArea = landArea;
-    }
-
     public double getPopulationDensity() {
         return populationDensity;
-    }
-
-    public void setPopulationDensity(double populationDensity) {
-        this.populationDensity = populationDensity;
-    }
-
-    public double getHousingDensity() {
-        return housingDensity;
-    }
-
-    public void setHousingDensity(double housingDensity) {
-        this.housingDensity = housingDensity;
     }
 }

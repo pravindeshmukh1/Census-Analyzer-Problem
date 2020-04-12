@@ -28,9 +28,8 @@ public class CensusDao {
         population = usCensusCSV.getPopulation();
     }
 
-    public CensusDao(IndiaStateCodeCsv indiaStateCodeCsv) {
-        stateCode = indiaStateCodeCsv.stateCode;
-        state = indiaStateCodeCsv.stateName;
+    public CensusDao(IndiaStateCodeCsv csvState) {
+        stateCode = csvState.stateCode;
     }
 
     public static Comparator<CensusDao> getSortComparator(CensusAnalyser.SortingMode mode) {
@@ -42,6 +41,8 @@ public class CensusDao {
             return Comparator.comparing(CensusDao::getPopulationDensity).reversed();
         if (mode.equals(CensusAnalyser.SortingMode.AREA))
             return Comparator.comparing(CensusDao::getTotalArea).reversed();
+        if (mode.equals(CensusAnalyser.SortingMode.STATECODE))
+            return Comparator.comparing(census -> census.stateCode);
         return null;
     }
 
@@ -55,6 +56,16 @@ public class CensusDao {
 
     public double getPopulationDensity() {
         return populationDensity;
+    }
+
+    public Object getCensusDTO(CensusAnalyser.Country country, CensusAnalyser.SortingMode mode) {
+        if (mode.equals(CensusAnalyser.SortingMode.STATECODE) && country.equals(CensusAnalyser.Country.INDIA))
+            return new IndiaStateCodeCsv(stateCode);
+        if (country.equals(CensusAnalyser.Country.INDIA))
+            return new IndiaStateCensusCsv(state, stateCode, population, totalArea, populationDensity);
+        if (country.equals(CensusAnalyser.Country.US))
+            return new USStateCensusCsv(state, stateCode, population, totalArea, populationDensity);
+        return null;
     }
 
     public Object getCensusDTO(CensusAnalyser.Country country) {

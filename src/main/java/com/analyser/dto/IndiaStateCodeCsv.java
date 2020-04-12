@@ -20,6 +20,13 @@ public class IndiaStateCodeCsv {
         this.tin = tin;
     }
 
+    public IndiaStateCodeCsv(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
+    public IndiaStateCodeCsv() {
+    }
+
     @Override
     public String toString() {
         return "IndiaStateCodeCsv{" +
